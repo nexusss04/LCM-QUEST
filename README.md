@@ -1,12 +1,17 @@
 # LCM QUEST — Pac-Man GSTK
 
-Permainan pembelajaran GSTK (LCM) ringkas dalam satu fail HTML.
-
 ## Cara bermain
-1. Buka `index.html` dalam Chrome, Edge, Firefox atau pelayar moden.
-2. Pilih **Easy**, **Medium** atau **Hard** dari skrin permulaan.
-3. Gerakkan Pac-Man dengan kekunci anak panah atau butang arah pada skrin.
-4. Kutip ceri untuk memaparkan soalan GSTK.
-5. Semasa soalan aktif, kejar hantu yang memaparkan jawapan yang betul. Hantu yang salah akan mengurangkan satu nyawa.
+1. Extract ZIP ke folder baru.
+2. Buka `index.html` menggunakan Chrome, Edge atau Firefox.
+3. Pilih EASY, MEDIUM atau HARD sebelum mula.
+4. Gerakkan Pac-Man menggunakan kekunci anak panah atau butang arah pada skrin.
+5. Kekalkan titik-titik kuning di laluan: Pac-Man mengutip titik apabila melaluinya.
+6. Apabila Pac-Man makan ceri 🍒, permainan berhenti seketika dan memaparkan situasi harian GSTK serta soalan.
+7. Tekan **FAHAM! KEJAR JAWAPAN**, kemudian kejar hantu yang membawa nombor GSTK yang betul. Tersentuh hantu dengan jawapan salah akan mengurangkan satu nyawa.
 
-Tiada pemasangan atau internet diperlukan selepas fail dimuat turun.
+## Tahap
+- EASY: nombor lebih kecil, 3 jawapan betul untuk menang.
+- MEDIUM: nombor sederhana, 4 jawapan betul untuk menang.
+- HARD: nombor lebih besar, 5 jawapan betul untuk menang.
+
+Game berjalan secara lokal dalam browser; tiada pemasangan diperlukan.
