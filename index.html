@@ -1,71 +1,278 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-<meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>LCM QUEST — Pac-Man GSTK</title>
+<meta charset="UTF-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>LCM QUEST</title>
 <style>
 :root{--bg:#07111f;--panel:#101f35;--cyan:#49e7ff;--pink:#ff4f9a;--gold:#ffd65a;--white:#f3f8ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#132849,#050a13 70%);font-family:'Fredoka',system-ui,Arial,sans-serif;color:var(--white);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:14px}.app{width:min(1200px,100%);text-align:center}.logo{font-family:'Press Start 2P',monospace;font-weight:400;line-height:1.5;letter-spacing:1px;font-size:clamp(18px,4.8vw,34px);color:var(--gold);text-shadow:0 0 8px #ffbd3d88,0 0 22px #ffbd3d55}.sub{color:#a8c2df;margin:3px 0 18px}.panel{background:#0d1a2c;border:1px solid #284261;border-radius:18px;padding:18px;box-shadow:0 15px 45px #0007}.hidden{display:none!important}.pick-title{font-size:22px;font-weight:900;margin-bottom:5px}.pick-desc{color:#b3c8df;margin-bottom:18px}.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.level{border:2px solid #34506d;border-radius:14px;background:#12243b;color:white;padding:15px 8px;cursor:pointer;font:inherit;transition:.15s}.level:hover{transform:translateY(-2px)}.level.selected{transform:translateY(-4px);box-shadow:0 0 0 3px #ffffff20,0 10px 24px #0007}.level[data-level="0"]{border-color:#2b875c;background:linear-gradient(160deg,#123c2d,#12243b)}.level[data-level="1"]{border-color:#a77c1f;background:linear-gradient(160deg,#493816,#12243b)}.level[data-level="2"]{border-color:#a93650;background:linear-gradient(160deg,#4a1d2a,#12243b)}.level[data-level="0"].selected{outline:3px solid #54e69b}.level[data-level="1"].selected{outline:3px solid #ffdc65}.level[data-level="2"].selected{outline:3px solid #ff6b88}.level strong{display:block;font-size:19px}.level small{display:block;color:#b8cbe0;margin-top:6px;font-size:12px}.primary{border:0;border-radius:12px;background:var(--gold);color:#17130a;font-weight:1000;padding:13px 24px;font-size:16px;cursor:pointer;margin-top:17px}.primary:disabled{opacity:.4;cursor:not-allowed}.hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}.pill{background:#10233a;border:1px solid #2b4665;border-radius:999px;padding:8px 13px;font-weight:800}.pill span{color:var(--gold)}canvas{display:block;width:100%;max-width:900px;height:auto;margin:0 auto;border:2px solid #317bd4;border-radius:12px;background:#030914;box-shadow:0 0 0 4px #0b1b31,0 0 30px #2877e455}.panel.game-panel{padding:14px;background:linear-gradient(180deg,#0c1b30,#071321)}.maze-frame{width:100%;padding:10px;border-radius:18px;background:linear-gradient(135deg,#102e54,#081526 50%,#31240c);border:1px solid #244b76;box-shadow:inset 0 0 22px #0008}.hint{font-size:13px;color:#a8bfd8;margin:10px 0}.controls{display:grid;grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,44px);gap:5px;justify-content:center;margin:10px auto 0}.controls button{background:#17304c;border:1px solid #345779;border-radius:10px;color:white;font-size:20px;touch-action:manipulation}.controls button:nth-child(1){grid-column:2}.controls button:nth-child(2){grid-column:1;grid-row:2}.controls button:nth-child(3){grid-column:2;grid-row:2}.controls button:nth-child(4){grid-column:3;grid-row:2}.question{font-size:18px;font-weight:900;color:var(--gold);margin:8px}.notice{color:#bfd1e6;font-size:13px;min-height:18px}.overlay{position:fixed;inset:0;background:#020711e8;display:flex;align-items:center;justify-content:center;padding:18px;z-index:4}.overlay .panel{max-width:420px;width:100%}.overlay h2{color:var(--gold);margin:0 0 8px}.overlay p{color:#c4d4e6;line-height:1.5}.footer{font-size:11px;color:#6e89a8;margin-top:12px}@media(max-width:700px){body{padding:7px}.app{width:100%}.maze-frame{padding:4px}.panel.game-panel{padding:8px}.hud{gap:5px}.pill{font-size:12px;padding:6px 9px}.hint{font-size:12px}}@media(max-width:420px){.panel{padding:13px}.levels{gap:6px}.level{padding:12px 4px}.level strong{font-size:16px}.level small{font-size:10px}.pill{padding:6px 9px;font-size:13px}}
+
+.overlay{overflow-y:auto;padding:16px}.overlay>.panel{max-height:94vh;overflow-y:auto}.factor-hint{margin:14px auto 16px;padding:14px;border:1px solid #3d6687;border-radius:16px;background:linear-gradient(145deg,#142d47,#101c35);max-width:670px}.factor-hint h3{margin:0 0 5px;color:#ffe18a;font-size:17px}.factor-hint p{font-size:13px;color:#c6d8ec;margin:4px 0 12px}.tree-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tree-card{background:#f6f4ed;color:#152b4b;border-radius:12px;padding:10px 5px}.tree-card strong{font-size:15px}.tree-card svg{width:100%;height:auto;max-height:190px;display:block}.tree-card .leaf{fill:#ffe18a;stroke:#b5801e;stroke-width:1.7}.tree-card .branch{stroke:#395b80;stroke-width:2.3}.tree-card text{font:700 15px system-ui;fill:#142c4d;text-anchor:middle;dominant-baseline:central}.hint-footer{color:#e9f1ff!important;font-weight:600}@media(max-width:480px){.factor-hint{padding:9px}.tree-pair{gap:6px}.tree-card{padding:6px 2px}.tree-card svg{max-height:140px}}
+
+/* Arcade lobby: immersive, non-slide interface */
+body{background:radial-gradient(ellipse at 50% 18%,#122c54 0%,#071224 43%,#030711 100%);background-attachment:fixed}
+.app{max-width:1100px}.hero{position:relative;padding:28px 12px 20px;isolation:isolate}.hero::before{content:"";position:absolute;inset:-20px 7% -5px;background:repeating-linear-gradient(90deg,transparent 0 45px,#56b8ff09 46px 47px),repeating-linear-gradient(0deg,transparent 0 45px,#56b8ff09 46px 47px);mask-image:linear-gradient(transparent,#000 40%,transparent);pointer-events:none;z-index:-1}.hero-kicker{font:700 11px 'Fredoka',sans-serif;letter-spacing:3px;color:#89c5e8}.live-dot{display:inline-block;width:6px;height:6px;margin:0 10px 2px;border-radius:50%;background:#ffcf4e;box-shadow:0 0 10px #ffcf4e}.hero-logo{font-family:'Russo One',Impact,system-ui,sans-serif;font-size:clamp(54px,10vw,116px);font-weight:900;letter-spacing:-4px;line-height:1.02;display:flex;align-items:baseline;justify-content:center;gap:18px;filter:drop-shadow(0 12px 16px #0009)}.hero-lcm{color:#ffe36b;text-shadow:0 5px 0 #bc7a23,0 0 22px #ffb9384f}.hero-quest{color:#f2faff;text-shadow:0 5px 0 #2263ad,0 0 25px #45b8ff5e}.hero-star{color:#ff649c;font-size:.4em;vertical-align:top;margin-left:7px}.hero-sub{font-weight:700;color:#a5c6e8;font-size:clamp(13px,2vw,18px);letter-spacing:1px;margin-top:12px}.hero-sub span{color:#ffe36b;padding:0 9px}.hero-track{display:flex;align-items:center;justify-content:center;gap:13px;margin:19px auto 0;color:#ffe36b}.hero-track i{width:6px;height:6px;border-radius:50%;background:#ffe9a0;box-shadow:0 0 8px #ffe6a6}.pac-symbol{font-size:32px;display:inline-block;animation:pacbob 1s ease-in-out infinite alternate}.ghost-symbol{font-size:25px;color:#ff76b6;text-shadow:0 0 14px #ff76b6}@keyframes pacbob{to{transform:translateX(8px)}}
+#menu.panel{max-width:870px;margin:0 auto;border:1px solid #31517d;background:linear-gradient(155deg,#102642f5,#08162bf8);border-radius:32px;padding:28px 34px 24px;box-shadow:0 30px 80px #000a,0 0 70px #277ee01a,inset 0 1px #9bc8ff28}.menu-head{margin-bottom:22px}.menu-eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;color:#ffd36a}.pick-title{font-family:'Russo One',Impact,sans-serif;font-size:clamp(25px,3.5vw,36px);font-weight:400;letter-spacing:.3px;margin:8px 0}.pick-desc{font-size:15px;color:#a9c5e2;margin:4px 0}.levels{gap:16px}.level{position:relative;min-height:196px;border-radius:24px;border:1px solid #375372;background:#10213b;padding:21px 10px 17px;overflow:hidden;transition:transform .22s,box-shadow .22s,border-color .22s;display:flex;flex-direction:column;align-items:center;justify-content:center}.level::after{content:"";position:absolute;inset:auto -20px -65px;height:110px;border-radius:50%;background:var(--level-glow);filter:blur(38px);opacity:.26;pointer-events:none}.level[data-level="0"]{--level-glow:#3bf2a3;background:linear-gradient(150deg,#123a39,#0c2034);border-color:#2c7966}.level[data-level="1"]{--level-glow:#ffd45a;background:linear-gradient(150deg,#40331c,#142035);border-color:#9e783a}.level[data-level="2"]{--level-glow:#ff6eae;background:linear-gradient(150deg,#432138,#172037);border-color:#965070}.level:hover{transform:translateY(-5px);box-shadow:0 14px 28px #0007}.level.selected{transform:translateY(-5px);box-shadow:0 0 0 2px var(--level-glow),0 15px 36px #0009}.level[data-level="0"].selected,.level[data-level="1"].selected,.level[data-level="2"].selected{outline:none}.level-symbol{font-size:36px;line-height:1;color:var(--level-glow);filter:drop-shadow(0 0 12px var(--level-glow));margin-bottom:12px}.level strong{font-family:'Russo One',Impact,sans-serif;font-weight:400;font-size:clamp(17px,2.1vw,23px);letter-spacing:.4px}.level-tag{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--level-glow);margin:7px 0 9px}.level small{color:#c4d5e9;font-size:12px;line-height:1.55;margin:0}.selection-preview{color:#b9d5ef;font-weight:700;font-size:14px;margin:20px 0 0}.start-arcade{font-family:'Russo One',Impact,sans-serif;letter-spacing:1px;font-weight:400;font-size:19px;border-radius:999px;padding:16px 58px;margin-top:18px;background:linear-gradient(180deg,#ffe88c,#ffc342);box-shadow:0 7px 0 #a96b19,0 12px 32px #f9b02d4a;transition:transform .15s,box-shadow .15s}.start-arcade:hover{transform:translateY(-3px);box-shadow:0 10px 0 #a96b19,0 17px 35px #f9b02d66}.menu-tip{max-width:620px;margin:22px auto 0;color:#8faecb;font-size:13px;line-height:1.6}.footer{margin:18px 0;color:#6685a7}
+@media(max-width:650px){.hero-logo{gap:9px;letter-spacing:-2px;font-size:clamp(42px,10vw,70px)}.hero{padding:12px 2px 10px}.hero-kicker{font-size:9px;letter-spacing:1px}#menu.panel{padding:20px 13px;border-radius:23px}.levels{gap:8px}.level{padding:13px 5px;min-height:170px;border-radius:16px}.level-symbol{font-size:26px;margin-bottom:9px}.level strong{font-size:clamp(12px,3.2vw,18px)}.level-tag{font-size:8px;letter-spacing:.5px}.level small{font-size:10px}.start-arcade{padding:15px 32px}}
+@media(max-width:390px){.levels{grid-template-columns:1fr}.level{min-height:85px}.hero-logo{font-size:39px}}
 </style></head>
-<body><main class="app"><div class="logo">🍒 LCM QUEST</div><div class="sub">PAC-MAN GSTK • Tangkap hantu dengan jawapan yang betul!</div>
-<section id="menu" class="panel"><div class="pick-title">PILIH TAHAP KESUKARAN</div><div class="pick-desc">Pilih level sebelum mula bermain.</div><div class="levels">
-<button class="level selected" data-level="0"><strong>🟢 EASY</strong><small>🟢 Hantu paling perlahan<br>GSTK nombor kecil<br>3 soalan untuk menang</small></button><button class="level" data-level="1"><strong>🟡 MEDIUM</strong><small>🟡 Hantu lebih laju<br>GSTK nombor sederhana<br>4 soalan untuk menang</small></button><button class="level" data-level="2"><strong>🔴 HARD</strong><small>🔴 Hantu paling pantas<br>GSTK nombor besar<br>5 soalan untuk menang</small></button></div><p id="levelPreview" class="pick-desc"><strong>Dipilih: EASY</strong> — hantu perlahan, soalan nombor kecil, perlu jawab 3 soalan dengan betul.</p><button id="start" class="primary">MULA BERMAIN ▶</button><p class="hint">Kutip ceri 🍒 untuk keluarkan soalan GSTK. Kejar hantu bernombor jawapan yang betul!</p></section>
-<section id="game" class="hidden"><div class="hud"><div class="pill">TAHAP: <span id="levelName">EASY</span></div><div class="pill">SKOR: <span id="score">0</span></div><div class="pill">NYAWA: <span id="lives">❤️❤️❤️</span></div></div><div class="panel game-panel"><div id="question" class="question">Kutip ceri untuk dapatkan soalan!</div><div class="maze-frame"><canvas id="board" width="660" height="510" aria-label="Permainan maze Pac-Man"></canvas></div><div class="hint">Guna kekunci anak panah atau butang arah. Elak hantu yang salah!</div><div class="controls"><button data-dir="up">▲</button><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div><div id="notice" class="notice">Cari ceri 🍒 di dalam maze.</div><button id="back" class="primary">TUKAR LEVEL / MENU</button></div></section>
-<div class="footer">LCM QUEST • Latihan Gandaan Sepunya Terkecil (GSTK)</div></main>
-<div id="modal" class="overlay hidden"><div class="panel"><h2 id="modalTitle">Tahniah!</h2><p id="modalText"></p><button id="modalBtn" class="primary">TERUSKAN</button></div></div>
+<body><main class="app"><div class="hero"><div class="hero-kicker"><span class="live-dot"></span> CABARAN ARKED MATEMATIK <span class="live-dot"></span></div><div class="hero-logo"><span class="hero-lcm">LCM</span><span class="hero-quest">QUEST<span class="hero-star">✦</span></span></div><div class="hero-sub">Gandaan Sepunya Terkecil <span>•</span> Misi Pac-Man</div><div class="hero-track" aria-hidden="true"><span class="pac-symbol">◕</span><i></i><i></i><i></i><i></i><i></i><span class="ghost-symbol">♟</span></div></div>
+<section id="menu" class="panel"><div class="menu-head"><div class="menu-eyebrow">SEDIA UNTUK MISI?</div><div class="pick-title">Pilih tahap cabaran</div><div class="pick-desc">Pilih kesukaran, kutip ceri dan buru jawapan GSTK!</div></div><div class="levels">
+<button class="level selected" data-level="0"><span class="level-symbol">✦</span><strong>MUDAH</strong><span class="level-tag">★</span><small>10 CABARAN</small></button>
+<button class="level" data-level="1"><span class="level-symbol">⚡</span><strong>SEDERHANA</strong><span class="level-tag">★★</span><small>10 CABARAN</small></button>
+<button class="level" data-level="2"><span class="level-symbol">★</span><strong>SUSAH</strong><span class="level-tag">★★★</span><small>10 CABARAN</small></button>
+</div><div id="levelPreview" class="selection-preview">MUDAH DIPILIH</div><button id="start" class="primary start-arcade">▶ &nbsp; MULA MISI</button><p class="menu-tip">🍒 KUTIP CERI  ·  SELESAIKAN GSTK  ·  KEJAR JAWAPAN</p></section>
+<section id="game" class="hidden"><div class="hud"><div class="pill">TAHAP: <span id="levelName">MUDAH</span></div><div class="pill">SKOR: <span id="score">0</span></div><div class="pill">NYAWA: <span id="lives">❤️❤️❤️</span></div><button id="musicToggle" class="pill" type="button" style="color:#ffd65a;cursor:pointer">🔊 MUZIK: ON</button></div><div class="panel game-panel"><div id="question" class="question">🍒 CARI CERI!</div><div class="maze-frame"><canvas id="board" width="660" height="510" aria-label="Permainan maze Pac-Man"></canvas></div><div class="hint">GERAK: ← ↑ → ↓ / WASD</div><div class="controls"><button data-dir="up">▲</button><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div><div id="notice" class="notice">🍒 CARI CERI</div><button id="back" class="primary">MENU UTAMA</button></div></section>
+<div class="footer">LCM QUEST • ARCADE GSTK</div></main>
+<div id="modal" class="overlay hidden"><div class="panel"><h2 id="modalTitle">Tahniah!</h2><p id="modalText"></p><div id="factorHint" class="factor-hint hidden"></div><button id="modalBtn" class="primary">TERUSKAN</button></div></div>
 <script>
-(()=>{'use strict';const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');const menu=document.getElementById('menu'),game=document.getElementById('game'),questionEl=document.getElementById('question'),notice=document.getElementById('notice'),modal=document.getElementById('modal');let chosen=0,level=0,score=0,lives=3,solved=0,active=false,questionOn=false,invuln=0,last=0,raf=0,correct=0,questionText='';
-const settings=[{name:'EASY',ghostSpeed:74,nums:[[2,3],[3,4],[4,6],[5,10],[6,8]],goal:3},{name:'MEDIUM',ghostSpeed:96,nums:[[6,8],[9,12],[8,14],[12,18],[15,20],[14,21]],goal:4},{name:'HARD',ghostSpeed:120,nums:[[12,18],[16,24],[21,28],[18,30],[24,36],[27,45],[32,48]],goal:5}];
+(()=>{'use strict';const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');const menu=document.getElementById('menu'),game=document.getElementById('game'),questionEl=document.getElementById('question'),notice=document.getElementById('notice'),modal=document.getElementById('modal');let chosen=0,level=0,score=0,lives=3,solved=0,active=false,questionOn=false,invuln=0,last=0,raf=0,correct=0,questionText='',effect=null,particles=[];
+const settings=[{name:'MUDAH',ghostSpeed:65,nums:[[3,5],[4,6],[5,7],[6,9],[4,10],[7,8],[6,10],[8,12],[9,10],[8,15]],goal:10},{name:'SEDERHANA',ghostSpeed:74,nums:[[6,8],[6,9],[8,10],[9,12],[10,15],[12,16],[12,18],[14,21],[15,20],[16,24]],goal:10},{name:'SUSAH',ghostSpeed:83,nums:[[8,12],[9,15],[10,16],[12,18],[14,20],[15,18],[16,24],[18,24],[20,30],[24,36]],goal:10}];
 const raw=['######################','#........#...........#','#.##.##..#..##.##.##..#','#....................#','#.##.#.######.#.##.##.#','#....#....#...#.......#','####.####.#.####.######','#..............#.....#','#.##.###.####..#.###..#','#......#......#.......#','###.##.#.####.#.##.####','#......#......#.......#','#.####.###.##.###.####.#','#....................#','#.##.##..#..##.##.##..#','#........#...........#','######################'];
-const tile=30,offsetX=0,offsetY=0;let maze=[],player,ghosts=[],cherries=[],pellets=new Set(),questionCherry=null;function buildMaze(){maze=raw.map(r=>(r+'######################').slice(0,22).split(''));for(let y=0;y<maze.length;y++){maze[y][0]='#';maze[y][21]='#';}maze[0]=Array(22).fill('#');maze[maze.length-1]=Array(22).fill('#');pellets=new Set();maze.forEach((row,y)=>row.forEach((cell,x)=>{if(cell==='.')pellets.add(x+','+y)}));}
+const tile=30,offsetX=0,offsetY=0;let maze=[],player,ghosts=[],cherries=[],pellets=new Set(),questionCherry=null,questionDeck=[],audioCtx=null,musicTimer=null,musicEnabled=false,musicStep=0,lastPelletSound=0;function buildMaze(){maze=raw.map(r=>(r+'######################').slice(0,22).split(''));for(let y=0;y<maze.length;y++){maze[y][0]='#';maze[y][21]='#';}maze[0]=Array(22).fill('#');maze[maze.length-1]=Array(22).fill('#');pellets=new Set();maze.forEach((row,y)=>row.forEach((cell,x)=>{if(cell==='.')pellets.add(x+','+y)}));}
 function floor(x,y){return y>=0&&y<maze.length&&x>=0&&x<maze[y].length&&maze[y][x]!=='#'}function randomFloor(){let p;do{p={x:Math.floor(Math.random()*maze[0].length),y:Math.floor(Math.random()*maze.length)}}while(!floor(p.x,p.y)||Math.abs(p.x-1)+Math.abs(p.y-1)<5);return p}
-function startGame(){level=chosen;score=0;lives=3;solved=0;buildMaze();player={x:tile*1.5,y:tile*1.5,dir:{x:0,y:0},next:{x:0,y:0},speed:108};ghosts=Array.from({length:4},(_,i)=>{const p=randomFloor();return {x:(p.x+.5)*tile,y:(p.y+.5)*tile,color:['#ff4e78','#48d7ff','#ffad45','#d98aff'][i],dir:{x:0,y:0},num:0}});cherries=[];for(let i=0;i<5;i++){let c=randomFloor();while(cherries.some(q=>same(q,c)))c=randomFloor();cherries.push(c)}questionOn=false;active=true;invuln=0;menu.classList.add('hidden');game.classList.remove('hidden');modal.classList.add('hidden');document.getElementById('levelName').textContent=settings[level].name;updateHud();newQuestionPrompt();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+function reachableCells(){
+ const seen=new Set(['1,1']),q=[{x:1,y:1}],ds=[[1,0],[-1,0],[0,1],[0,-1]];
+ for(let i=0;i<q.length;i++)for(const [dx,dy] of ds){
+  const x=q[i].x+dx,y=q[i].y+dy,k=x+','+y;
+  if(floor(x,y)&&!seen.has(k)){seen.add(k);q.push({x,y})}
+ }
+ return q;
+}
+function safeFloor(){
+ const cells=reachableCells().filter(p=>Math.abs(p.x-1)+Math.abs(p.y-1)>=5);
+ return cells[Math.floor(Math.random()*cells.length)]||{x:1,y:1};
+}
+function placeNextCherry(){
+ const occupied=new Set(cherries.map(c=>c.x+','+c.y));
+ const choices=reachableCells().filter(p=>!occupied.has(p.x+','+p.y)&&Math.abs(p.x-Math.floor(player.x/tile))+Math.abs(p.y-Math.floor(player.y/tile))>=3);
+ if(choices.length){const c=choices[Math.floor(Math.random()*choices.length)];cherries.push(c)}
+}
+const GHOST_SPACING=tile*2.4;
+function ghostCrowding(x,y,self){
+ return ghosts.reduce((sum,h)=>{
+  if(h===self)return sum;
+  const d=Math.hypot(h.x-x,h.y-y);
+  return sum+(d<GHOST_SPACING?Math.pow((GHOST_SPACING-d)/GHOST_SPACING,2)*8:0);
+ },0);
+}
+const ghostColors=['#ff4e78','#48d7ff','#ffad45','#d98aff','#74f7a3','#ff7be5'];
+function spawnGhost(i){
+ let p=safeFloor(),tries=0;
+ while(tries++<100 && ((player&&Math.abs(p.x-Math.floor(player.x/tile))+Math.abs(p.y-Math.floor(player.y/tile))<5)||ghosts.some(g=>Math.hypot(g.x-(p.x+.5)*tile,g.y-(p.y+.5)*tile)<tile*4)))p=safeFloor();
+ return {x:(p.x+.5)*tile,y:(p.y+.5)*tile,color:ghostColors[i%ghostColors.length],dir:{x:0,y:0},num:0,_to:null};
+}
+function replenishGhosts(){
+ while(ghosts.length<6)ghosts.push(spawnGhost(ghosts.length));
+}
+function startGame(){if(!musicEnabled)startMusic();level=chosen;score=0;lives=3;solved=0;questionDeck=[];buildMaze();ghosts=[];player={x:tile*1.5,y:tile*1.5,dir:{x:0,y:0},next:{x:0,y:0},speed:112};ghosts=[];for(let i=0;i<6;i++)ghosts.push(spawnGhost(i));cherries=[];placeNextCherry();questionOn=false;active=true;invuln=0;effect=null;particles=[];menu.classList.add('hidden');game.classList.remove('hidden');modal.classList.add('hidden');document.getElementById('levelName').textContent=settings[level].name;updateHud();newQuestionPrompt();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
 function newQuestionPrompt(){questionOn=false;questionEl.textContent='Kutip ceri 🍒 untuk dapatkan soalan!';ghosts.forEach(g=>g.num=0);notice.textContent='Cari ceri di dalam maze.'}
 function gcd(a,b){while(b){[a,b]=[b,a%b]}return a}function lcm(a,b){return a/gcd(a,b)*b}
-function makeQuestion(){const list=settings[level].nums;let pair=list[Math.floor(Math.random()*list.length)];correct=lcm(pair[0],pair[1]);const stories=[`Bas A tiba setiap ${pair[0]} minit dan Bas B setiap ${pair[1]} minit. Jika kedua-duanya tiba serentak sekarang, berapa minit lagi mereka akan tiba serentak?`,`Dua lampu berkelip setiap ${pair[0]} saat dan ${pair[1]} saat. Selepas berapa saat kedua-duanya berkelip bersama semula?`,`Aina berlatih setiap ${pair[0]} hari dan Amir setiap ${pair[1]} hari. Jika mereka berlatih bersama hari ini, berapa hari lagi mereka akan berlatih bersama?`,`Dua robot membuat pusingan setiap ${pair[0]} saat dan ${pair[1]} saat. Bilakah mereka kembali ke garisan mula serentak?`];questionText=`GSTK bagi ${pair[0]} dan ${pair[1]} ialah berapa?`;const story=stories[Math.floor(Math.random()*stories.length)];questionEl.textContent='🍒 Cabaran GSTK muncul! Kejar hantu dengan jawapan yang betul.';questionOn=true;const options=new Set([correct]);while(options.size<4){let n=correct+Math.floor(Math.random()*Math.max(8,correct*.7))+1;if(Math.random()<.5)n=Math.max(2,correct-Math.floor(Math.random()*Math.max(5,correct*.45)));options.add(n)}let arr=[...options].sort(()=>Math.random()-.5);ghosts.forEach((g,i)=>g.num=arr[i]);notice.textContent='Cari jawapan dalam situasi, kemudian kejar hantu yang betul!';active=false;showModal('🍒 SITUASI GSTK',`${story}\n\nSoalan: ${questionText}\n\nPilih jawapan dengan mengejar hantu yang membawa nombor betul.`, 'FAHAM! KEJAR JAWAPAN',()=>{active=true;last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)})}
-function updateHud(){document.getElementById('score').textContent=score;document.getElementById('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives)}function same(a,b){return a.x===b.x&&a.y===b.y}function cellAt(px,py){return {x:Math.floor(px/tile),y:Math.floor(py/tile)}}
-function atCenter(o){const c=cellAt(o.x,o.y);return Math.abs(o.x-(c.x+.5)*tile)<6&&Math.abs(o.y-(c.y+.5)*tile)<6}
-function movePlayer(dt){
- const c=cellAt(player.x,player.y);
- if(atCenter(player)){
-  player.x=(c.x+.5)*tile;player.y=(c.y+.5)*tile;
-  if(player.next.x||player.next.y){if(floor(c.x+player.next.x,c.y+player.next.y))player.dir={...player.next}}
-  if(!floor(c.x+player.dir.x,c.y+player.dir.y))player.dir={x:0,y:0};
+function primeSplit(n){
+ for(let d=2;d*d<=n;d++)if(n%d===0)return [d,n/d];
+ return null;
+}
+function factorTreeSVG(n){
+ const nodes=[],edges=[];
+ function add(v,x,y,spread){
+  const id=nodes.length,split=primeSplit(v);
+  nodes.push({v,x,y,prime:!split});
+  if(split){
+   const x1=x-spread,x2=x+spread,ny=y+48;
+   edges.push([x,y+13,x1,ny-13],[x,y+13,x2,ny-13]);
+   add(split[0],x1,ny,spread*.52);add(split[1],x2,ny,spread*.52);
+  }
+  return id;
  }
- const nx=player.x+player.dir.x*player.speed*dt,ny=player.y+player.dir.y*player.speed*dt,nc=cellAt(nx,ny);
- if(floor(nc.x,nc.y)){player.x=nx;player.y=ny}else{player.x=(c.x+.5)*tile;player.y=(c.y+.5)*tile;player.dir={x:0,y:0}}
- const pc=cellAt(player.x,player.y);pellets.delete(pc.x+','+pc.y);
+ add(n,140,22,66);
+ const height=Math.max(...nodes.map(q=>q.y))+25;
+ return `<svg viewBox="0 0 280 ${height}" role="img" aria-label="Pokok faktor bagi ${n}">${edges.map(e=>`<line class="branch" x1="${e[0]}" y1="${e[1]}" x2="${e[2]}" y2="${e[3]}"/>`).join('')}${nodes.map(q=>`<circle cx="${q.x}" cy="${q.y}" r="17" fill="${q.prime?'#ffe18a':'#fff'}" stroke="${q.prime?'#b5801e':'#7192b0'}" stroke-width="2"/><text x="${q.x}" y="${q.y}">${q.v}</text>`).join('')}</svg>`;
+}
+function showFactorHint(a,b){
+ const hint=document.getElementById('factorHint');
+ hint.innerHTML=`<h3>🌳 PETUNJUK POKOK FAKTOR</h3><p>Rujuk faktor perdana bagi kedua-dua nombor. Cari GSTK sendiri — jawapan akhir tidak ditunjukkan.</p><div class="tree-pair"><div class="tree-card"><strong>Pokok faktor ${a}</strong>${factorTreeSVG(a)}</div><div class="tree-card"><strong>Pokok faktor ${b}</strong>${factorTreeSVG(b)}</div></div><p class="hint-footer">💡 Ambil setiap faktor perdana dengan kuasa tertinggi untuk cari GSTK.</p>`;
+ hint.classList.remove('hidden');
+}
+function makeQuestion(){replenishGhosts();const list=settings[level].nums;if(!questionDeck.length)questionDeck=[...list].sort(()=>Math.random()-.5);let pair=questionDeck.pop();correct=lcm(pair[0],pair[1]);const stories=[`Bas A tiba setiap ${pair[0]} minit dan Bas B setiap ${pair[1]} minit. Jika kedua-duanya tiba serentak sekarang, berapa minit lagi mereka akan tiba serentak?`,`Dua lampu berkelip setiap ${pair[0]} saat dan ${pair[1]} saat. Selepas berapa saat kedua-duanya berkelip bersama semula?`,`Aina berlatih setiap ${pair[0]} hari dan Amir setiap ${pair[1]} hari. Jika mereka berlatih bersama hari ini, berapa hari lagi mereka akan berlatih bersama?`,`Dua robot membuat pusingan setiap ${pair[0]} saat dan ${pair[1]} saat. Bilakah mereka kembali ke garisan mula serentak?`];questionText=`GSTK bagi ${pair[0]} dan ${pair[1]} ialah berapa?`;const story=stories[Math.floor(Math.random()*stories.length)];questionEl.textContent='🍒 POWER MODE! Hantu jadi biru dan LARI daripada Pac-Man. Kejar nombor jawapan GSTK yang betul!';questionOn=true;showFactorHint(pair[0],pair[1]);const options=new Set([correct]);while(options.size<ghosts.length){let n=correct+Math.floor(Math.random()*Math.min(18,Math.max(6,correct*.25)))+1;if(Math.random()<.5)n=Math.max(2,correct-Math.floor(Math.random()*Math.max(5,correct*.45)));options.add(n)}let arr=[...options].sort(()=>Math.random()-.5);ghosts.forEach((g,i)=>g.num=arr[i]);notice.textContent='⚡ Hantu ketakutan! Semua hantu biru sedang melarikan diri. Kejar jawapan yang betul!';active=false;showModal('🍒 SITUASI GSTK',`${story}\n\nSoalan: ${questionText}\n\nPilih jawapan dengan mengejar hantu yang membawa nombor betul.`, 'FAHAM! KEJAR JAWAPAN',()=>{active=true;last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)})}
+function updateHud(){document.getElementById('levelName').textContent=settings[level].name+' • '+solved+'/10';document.getElementById('score').textContent=score;document.getElementById('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives)}function same(a,b){return a.x===b.x&&a.y===b.y}function cellAt(px,py){return {x:Math.floor(px/tile),y:Math.floor(py/tile)}}
+function atCenter(o){const c=cellAt(o.x,o.y);return Math.abs(o.x-(c.x+.5)*tile)<6&&Math.abs(o.y-(c.y+.5)*tile)<6}
+function advance(entity, dt, speed, decide){
+ // Movement is tile-center to tile-center. A target is selected ONLY when
+ // the next cell is a real corridor; never recompute the target mid-step.
+ let remaining=Math.min(speed*dt,tile*.45);
+ let loops=0;
+ while(remaining>0.00001 && loops++<4){
+  if(!entity._to){
+   const x=Math.round(entity.x/tile-.5);
+   const y=Math.round(entity.y/tile-.5);
+   entity.x=(x+.5)*tile; entity.y=(y+.5)*tile;
+   decide(x,y);
+   const d=entity.dir;
+   if(!d || (!d.x&&!d.y) || !floor(x+d.x,y+d.y)){
+    entity.dir={x:0,y:0};break;
+   }
+   entity._to={x:(x+d.x+.5)*tile,y:(y+d.y+.5)*tile};
+  }
+  const dx=entity._to.x-entity.x,dy=entity._to.y-entity.y;
+  const distance=Math.hypot(dx,dy);
+  if(distance<.00001){entity.x=entity._to.x;entity.y=entity._to.y;entity._to=null;continue}
+  const step=Math.min(remaining,distance);
+  entity.x+=dx/distance*step;entity.y+=dy/distance*step;
+  remaining-=step;
+  if(step>=distance-.00001){
+   entity.x=entity._to.x;entity.y=entity._to.y;entity._to=null;
+  }
+ }
+}
+function movePlayer(dt){
+ advance(player,dt,player.speed,(x,y)=>{
+  if((player.next.x||player.next.y)&&floor(x+player.next.x,y+player.next.y))player.dir={...player.next};
+  if(!floor(x+player.dir.x,y+player.dir.y))player.dir={x:0,y:0};
+ });
+ const pc=cellAt(player.x,player.y);
+ if(pellets.delete(pc.x+','+pc.y)){score++;updateHud();if(performance.now()-lastPelletSound>95){sfx(440,.027,'square',.018);lastPelletSound=performance.now()}}
  const idx=cherries.findIndex(q=>q.x===pc.x&&q.y===pc.y);
- if(idx>=0){cherries.splice(idx,1);score+=10;updateHud();makeQuestion();if(!cherries.length){let cc=randomFloor();while(cherries.some(q=>same(q,cc)))cc=randomFloor();cherries.push(cc)}}
+ if(idx>=0&&!questionOn){
+  cherries.splice(idx,1);score+=10;updateHud();sfx(740,.12,'triangle',.07);makeQuestion();
+ }
+}
+// Shortest corridor distance from Pac-Man, respecting maze walls.
+function distancesFromPacman(){
+ const p=cellAt(player.x,player.y), key=(x,y)=>x+','+y;
+ const dist=new Map([[key(p.x,p.y),0]]),queue=[p];
+ const dirs=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+ for(let i=0;i<queue.length;i++){
+  const v=queue[i],n=dist.get(key(v.x,v.y));
+  for(const d of dirs){const x=v.x+d.x,y=v.y+d.y,k=key(x,y);
+   if(floor(x,y)&&!dist.has(k)){dist.set(k,n+1);queue.push({x,y})}
+  }
+ }
+ return dist;
+}
+function burst(x,y,color,count=22){
+ for(let i=0;i<count;i++){const a=Math.PI*2*i/count+Math.random()*.4,v=45+Math.random()*115;
+ particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.45+Math.random()*.5,max:.95,color,r:2+Math.random()*3})}
+}
+function hitEffect(kind,x,y){
+ const good=kind==='correct',color=good?'#65ffab':'#ff5a86';
+ burst(x,y,color,good?36:30);
+ effect={kind,x,y,t:0,duration:good?.85:1.35};
+}
+function resetChallengeAfterWrongGhost(){
+ // A wrong numbered ghost ends the current cherry challenge. Keep the
+ // completed-round count and score; the next question requires a NEW cherry.
+ questionOn=false;
+ ghosts.forEach(g=>{g.num=0});
+ cherries=[];
+ placeNextCherry();
+ questionEl.textContent='🍒 Cari ceri semula untuk cuba soalan GSTK!';
+ notice.textContent='Jawapan salah! Cari dan makan ceri baharu dahulu.';
+}
+function animateEffects(dt){
+ if(effect){effect.t+=dt;
+  if(effect.t>=effect.duration){
+   const was=effect.kind;effect=null;
+   if(was==='wrong'||was==='death'){
+    player.x=tile*1.5;player.y=tile*1.5;player.dir={x:0,y:0};player.next={x:0,y:0};player._to=null;
+    invuln=2.2;
+    if(was==='wrong' && lives>0)resetChallengeAfterWrongGhost();
+    if(lives<=0){active=false;showModal('GAME OVER',`Nyawa habis. Skor akhir: ${score}. Cuba lagi!`,'CUBA LAGI',startGame)}
+   }else if(was==='win'){active=false;showModal('TAHNIAH! 🎉',`Kamu berjaya untuk tahap ${settings[level].name}! Skor: ${score}.`,'MAIN LAGI',showMenu)}
+  }
+ }
+ particles=particles.filter(p=>p.life>0);
+ for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.97;p.vy*=.97;p.life-=dt}
+}
+function drawEffects(){
+ particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});
+ ctx.globalAlpha=1;ctx.shadowBlur=0;
+ if(!effect)return;
+ const e=effect,p=Math.min(1,e.t/e.duration),good=e.kind==='correct'||e.kind==='win';
+ ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.fillStyle=good?'#61ffb2':'#ff557e';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=22;
+ ctx.font='bold '+Math.round(22+18*Math.sin(Math.PI*p))+'px system-ui';
+ ctx.fillText(good?'✦ +100  BETUL! ✦':'✖ -1 NYAWA',canvas.width/2,canvas.height*.48);
+ ctx.restore();
 }
 function moveGhosts(dt){
  const dirs=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+ const distance=distancesFromPacman();
  ghosts.forEach((g,index)=>{
-  const c=cellAt(g.x,g.y);
-  if(atCenter(g)){
-   g.x=(c.x+.5)*tile;g.y=(c.y+.5)*tile;
-   let options=dirs.filter(d=>floor(c.x+d.x,c.y+d.y));const rev={x:-g.dir.x,y:-g.dir.y};const forward=options.filter(d=>!(d.x===rev.x&&d.y===rev.y));if(forward.length)options=forward;
-   if(!options.length){g.dir={x:0,y:0};return}
-   const pc=cellAt(player.x,player.y),chase=(index%2===0&&Math.random()<.62);
-   options.sort((a,b)=>{const da=Math.abs(c.x+a.x-pc.x)+Math.abs(c.y+a.y-pc.y),db=Math.abs(c.x+b.x-pc.x)+Math.abs(c.y+b.y-pc.y);return chase?da-db:Math.random()-.5});
-   g.dir=options[0];if(options.length>1&&Math.random()<.18)g.dir=options[Math.floor(Math.random()*options.length)];
-  }
-  const sp=settings[level].ghostSpeed*(index===0?1.02:index===1?.94:index===2?1.08:.9);const nx=g.x+g.dir.x*sp*dt,ny=g.y+g.dir.y*sp*dt,nc=cellAt(nx,ny);
-  if(floor(nc.x,nc.y)){g.x=nx;g.y=ny}else{g.x=(c.x+.5)*tile;g.y=(c.y+.5)*tile;g.dir={x:0,y:0}}
+  const scared=questionOn;
+  const sp=settings[level].ghostSpeed*[1.02,.94,1.08,.90,1.00,1.10][index]*(scared?.83:1);
+  advance(g,dt,sp,(x,y)=>{
+   let opts=dirs.filter(d=>floor(x+d.x,y+d.y));
+   if(!opts.length){g.dir={x:0,y:0};return}
+   const reverse=opts.find(d=>d.x===-g.dir.x&&d.y===-g.dir.y);
+   if(opts.length>1)opts=opts.filter(d=>d!==reverse);
+   const score=d=>distance.get((x+d.x)+','+(y+d.y))??9999;
+   // Spread ghosts out while respecting walls and the frightened flee behavior.
+   // Evaluate both next cell and two cells ahead to avoid bunching in corridors.
+   const rank=d=>{
+    const nx=(x+d.x+.5)*tile,ny=(y+d.y+.5)*tile;
+    const nx2=nx+d.x*tile,ny2=ny+d.y*tile;
+    const crowd=ghostCrowding(nx,ny,g)+
+       (floor(x+2*d.x,y+2*d.y)?ghostCrowding(nx2,ny2,g)*.55:0);
+    const path=score(d);
+    return (scared?path:-path)*.85-crowd*4;
+   };
+   opts.sort((a,b)=>rank(b)-rank(a));
+   g.dir=opts[0];
+
+  });
   if(Math.hypot(g.x-player.x,g.y-player.y)<tile*.58){
-   if(questionOn&&g.num===correct){score+=100;solved++;updateHud();questionOn=false;questionEl.textContent='Betul! +100 mata 🎉';notice.textContent='Jawapan betul! Cari ceri seterusnya.';ghosts.forEach(h=>h.num=0);if(solved>=settings[level].goal){active=false;showModal('TAHNIAH! 🎉',`Kamu berjaya untuk tahap ${settings[level].name}! Skor: ${score}.`,'MAIN LAGI',()=>showMenu())}}
-   else if(invuln<=0){lives--;updateHud();invuln=1.7;player.x=tile*1.5;player.y=tile*1.5;player.dir={x:0,y:0};player.next={x:0,y:0};notice.textContent=questionOn?'Hantu salah! Kamu hilang satu nyawa.':'Awas! Kamu hilang satu nyawa.';if(lives<=0){active=false;showModal('GAME OVER',`Nyawa habis. Skor akhir: ${score}. Cuba lagi!`,'CUBA LAGI',startGame)}}
+   if(questionOn&&g.num===correct){
+    score+=100;solved++;questionOn=false;invuln=2.2;hitEffect(solved>=settings[level].goal?'win':'correct',g.x,g.y);sfx(880,.12,'triangle',.10);setTimeout(()=>sfx(1175,.18,'triangle',.10),110);
+    // Correct ghost is eaten and disappears immediately. Others survive.
+    ghosts.splice(index,1);
+    ghosts.forEach(h=>{h.num=0});
+    questionEl.textContent='Betul! 👻 Hantu dimakan! Round '+solved+'/10';
+    notice.textContent='Teruskan perjalanan! Cari ceri seterusnya. ('+solved+'/10)';
+    if(!cherries.length&&solved<10)placeNextCherry();
+    updateHud();
+
+   }else if(invuln<=0){
+    lives--;updateHud();invuln=2.5;sfx(170,.24,'sawtooth',.08);hitEffect(lives<=0?'death':'wrong',player.x,player.y);
+    notice.textContent=questionOn?'Hantu salah! Kamu hilang satu nyawa.':'Awas! Kamu hilang satu nyawa.';
+
+   }
   }
  });
 }
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#020812';ctx.fillRect(0,0,canvas.width,canvas.height);const accent=['#35a7ff','#ffd45a','#ff547f'][level];
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#020812';ctx.fillRect(0,0,canvas.width,canvas.height);const accent=questionOn?'#537bff':['#35a7ff','#ffd45a','#ff547f'][level];
  for(let y=0;y<maze.length;y++)for(let x=0;x<maze[y].length;x++){const X=x*tile,Y=y*tile;if(maze[y][x]==='#'){ctx.fillStyle=level===0?'#0a2250':level===1?'#352b12':'#321323';ctx.fillRect(X,Y,tile,tile);ctx.strokeStyle=accent;ctx.lineWidth=1.7;ctx.shadowColor=accent;ctx.shadowBlur=5;ctx.strokeRect(X+2,Y+2,tile-4,tile-4);ctx.shadowBlur=0;ctx.strokeStyle=level===0?'#16477d':level===1?'#71521c':'#782742';ctx.lineWidth=1;ctx.strokeRect(X+6,Y+6,tile-12,tile-12)}else if(pellets.has(x+','+y)){ctx.fillStyle='#ffe9a6';ctx.shadowColor='#ffcf63';ctx.shadowBlur=7;ctx.beginPath();ctx.arc(X+tile/2,Y+tile/2,3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}}
  cherries.forEach(c=>{ctx.font='22px sans-serif';ctx.textAlign='center';ctx.fillText('🍒',(c.x+.5)*tile,(c.y+.73)*tile)});
- ghosts.forEach(g=>{ctx.save();ctx.translate(g.x,g.y);ctx.fillStyle=g.color;ctx.shadowColor=g.color;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(0,-1,tile*.34,Math.PI,0);ctx.lineTo(tile*.34,tile*.31);ctx.lineTo(tile*.17,tile*.21);ctx.lineTo(0,tile*.31);ctx.lineTo(-tile*.17,tile*.21);ctx.lineTo(-tile*.34,tile*.31);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(-5,-2,4.2,5.3,0,0,Math.PI*2);ctx.ellipse(5,-2,4.2,5.3,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#13213a';ctx.beginPath();ctx.arc(-5+g.dir.x*1.6,-2+g.dir.y*1.6,2,0,Math.PI*2);ctx.arc(5+g.dir.x*1.6,-2+g.dir.y*1.6,2,0,Math.PI*2);ctx.fill();if(questionOn){ctx.fillStyle='#fff';ctx.font='bold 13px Fredoka,system-ui';ctx.textAlign='center';ctx.shadowColor='#000';ctx.shadowBlur=4;ctx.fillText(g.num,0,-tile*.43)}ctx.restore()});
- ctx.save();ctx.translate(player.x,player.y);ctx.fillStyle='#ffd64b';ctx.shadowColor='#ffd64b';ctx.shadowBlur=12;const mouth=(Math.sin(performance.now()/65)+1)*.19;let angle=0;if(player.dir.x<0)angle=Math.PI;if(player.dir.y<0)angle=-Math.PI/2;if(player.dir.y>0)angle=Math.PI/2;ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,tile*.34,angle+mouth*Math.PI,angle+(2-mouth)*Math.PI);ctx.closePath();ctx.fill();ctx.restore();
+ ghosts.forEach(g=>{ctx.save();ctx.translate(g.x,g.y);const frightened=questionOn;const ghostColor=frightened?'#315cff':g.color;ctx.fillStyle=ghostColor;ctx.shadowColor=ghostColor;ctx.shadowBlur=frightened?17:10;ctx.beginPath();ctx.arc(0,-1,tile*.34,Math.PI,0);ctx.lineTo(tile*.34,tile*.31);ctx.lineTo(tile*.17,tile*.21);ctx.lineTo(0,tile*.31);ctx.lineTo(-tile*.17,tile*.21);ctx.lineTo(-tile*.34,tile*.31);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(-5,-2,4.2,5.3,0,0,Math.PI*2);ctx.ellipse(5,-2,4.2,5.3,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=questionOn?'#f7f7ff':'#13213a';ctx.beginPath();ctx.arc(-5+g.dir.x*1.6,-2+g.dir.y*1.6,2,0,Math.PI*2);ctx.arc(5+g.dir.x*1.6,-2+g.dir.y*1.6,2,0,Math.PI*2);ctx.fill();if(questionOn){ctx.fillStyle='#fff';ctx.font='bold 13px Fredoka,system-ui';ctx.textAlign='center';ctx.shadowColor='#000';ctx.shadowBlur=4;ctx.fillText(g.num,0,-tile*.43)}ctx.restore()});
+ ctx.save();ctx.translate(player.x,player.y);if(effect&&(effect.kind==='wrong'||effect.kind==='death')){ctx.rotate(effect.t*12);ctx.globalAlpha=Math.max(0,1-effect.t/effect.duration);ctx.scale(Math.max(.05,1-effect.t/effect.duration),Math.max(.05,1-effect.t/effect.duration))}ctx.fillStyle='#ffd64b';ctx.shadowColor='#ffd64b';ctx.shadowBlur=12;const mouth=(Math.sin(performance.now()/65)+1)*.19;let angle=0;if(player.dir.x<0)angle=Math.PI;if(player.dir.y<0)angle=-Math.PI/2;if(player.dir.y>0)angle=Math.PI/2;ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,tile*.34,angle+mouth*Math.PI,angle+(2-mouth)*Math.PI);ctx.closePath();ctx.fill();ctx.restore();drawEffects();
 }
-function loop(t){if(!active)return;const dt=Math.min((t-last)/1000,.04);last=t;if(invuln>0)invuln-=dt;movePlayer(dt);moveGhosts(dt);draw();raf=requestAnimationFrame(loop)}
-function showModal(title,text,btn,fn){document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text;const b=document.getElementById('modalBtn');b.textContent=btn;b.onclick=()=>{modal.classList.add('hidden');fn()};modal.classList.remove('hidden')}function showMenu(){active=false;cancelAnimationFrame(raf);game.classList.add('hidden');menu.classList.remove('hidden');modal.classList.add('hidden')}
-document.querySelectorAll('.level').forEach(b=>b.addEventListener('click',()=>{chosen=Number(b.dataset.level);document.querySelectorAll('.level').forEach(x=>x.classList.toggle('selected',x===b));const previews=['Dipilih: EASY — hantu paling perlahan, GSTK nombor kecil, perlu jawab 3 soalan dengan betul.','Dipilih: MEDIUM — hantu lebih laju, GSTK nombor sederhana, perlu jawab 4 soalan dengan betul.','Dipilih: HARD — hantu paling pantas, GSTK nombor lebih besar, perlu jawab 5 soalan dengan betul.'];document.getElementById('levelPreview').textContent=previews[chosen]}));document.getElementById('start').addEventListener('click',startGame);document.getElementById('back').addEventListener('click',showMenu);const dirs={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};window.addEventListener('keydown',e=>{if(dirs[e.key]){e.preventDefault();if(active)player.next={...dirs[e.key]}}});document.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();const d=b.dataset.dir;player.next= d==='up'?{x:0,y:-1}:d==='down'?{x:0,y:1}:d==='left'?{x:-1,y:0}:{x:1,y:0}}));
+function loop(t){if(!active)return;const dt=Math.min((t-last)/1000,.04);last=t;if(invuln>0)invuln-=dt;if(!effect){movePlayer(dt);moveGhosts(dt)}animateEffects(dt);draw();raf=requestAnimationFrame(loop)}
+
+// Original 8-bit arcade loop and sound effects (not the Pac-Man copyrighted melody).
+function sfx(freq,duration=.08,type='square',volume=.035){
+ if(!musicEnabled||!audioCtx)return;
+ try{const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+ o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(volume,t);
+ g.gain.exponentialRampToValueAtTime(.001,t+duration);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+duration+.015)}catch(e){}
+}
+function musicTick(){if(!musicEnabled||!audioCtx)return;
+ const melody=[392,0,523,587,659,0,587,523,440,0,523,440,392,330,349,0];
+ const bass=[196,196,220,220,174.61,174.61,196,196];
+ const note=melody[musicStep%melody.length];if(note)sfx(note,.115,'square',.017);
+ if(musicStep%2===0)sfx(bass[Math.floor(musicStep/2)%bass.length],.16,'triangle',.018);
+ musicStep++;
+}
+function startMusic(){if(!musicEnabled)toggleMusic();}
+function toggleMusic(){
+ if(!audioCtx){const A=window.AudioContext||window.webkitAudioContext;if(!A){document.getElementById('musicToggle').textContent='🔇 AUDIO TAK DISOKONG';return}audioCtx=new A()}
+ musicEnabled=!musicEnabled;audioCtx.resume();
+ document.getElementById('musicToggle').textContent=musicEnabled?'🔊 MUZIK: ON':'🔇 MUZIK: OFF';
+ if(musicTimer)clearInterval(musicTimer);
+ if(musicEnabled){musicTick();musicTimer=setInterval(musicTick,170);}
+}
+document.getElementById('musicToggle').addEventListener('click',toggleMusic);
+menu.addEventListener('pointerdown',()=>{if(!musicEnabled)startMusic()},{once:true});
+
+function showModal(title,text,btn,fn){if(title!=='🍒 SITUASI GSTK')document.getElementById('factorHint').classList.add('hidden');document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=text;const b=document.getElementById('modalBtn');b.textContent=btn;b.onclick=()=>{modal.classList.add('hidden');document.getElementById('factorHint').classList.add('hidden');fn()};modal.classList.remove('hidden')}function showMenu(){active=false;cancelAnimationFrame(raf);game.classList.add('hidden');menu.classList.remove('hidden');modal.classList.add('hidden')}
+document.querySelectorAll('.level').forEach(b=>b.addEventListener('click',()=>{chosen=Number(b.dataset.level);document.querySelectorAll('.level').forEach(x=>x.classList.toggle('selected',x===b));const previews=['MUDAH DIPILIH','SEDERHANA DIPILIH','SUSAH DIPILIH'];document.getElementById('levelPreview').textContent=previews[chosen]}));document.getElementById('start').addEventListener('click',startGame);document.getElementById('back').addEventListener('click',showMenu);const dirs={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0}};window.addEventListener('keydown',e=>{if(dirs[e.key]){e.preventDefault();if(active)player.next={...dirs[e.key]}}});document.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();const d=b.dataset.dir;player.next= d==='up'?{x:0,y:-1}:d==='down'?{x:0,y:1}:d==='left'?{x:-1,y:0}:{x:1,y:0}}));
 // Keep the maze movement aligned with the actual canvas grid.
 function resizeCanvas(){canvas.style.aspectRatio='22 / 17'}resizeCanvas();
 })();

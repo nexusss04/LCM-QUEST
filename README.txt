@@ -1,0 +1,1 @@
+Buka index.html di Chrome/Edge. Salah tangkap hantu bernombor: hilang 1 nyawa, animasi dimainkan, Pac-Man kembali ke mula, kemudian wajib makan ceri baharu sebelum mengejar jawapan. Round yang telah berjaya tidak hilang.
